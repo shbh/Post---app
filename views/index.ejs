@@ -15,14 +15,15 @@
           <div class="col col-md-8">
 
             <h1>Hi, <%= name %></h1>
-            <form>
+            <form action="/create" method="POST">
               <div class="form-group">
                 <label for="formGroupExampleInput">Title</label>
-                <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Your post title here.">
+                <input type="text" class="form-control" name="title" id="formGroupExampleInput"
+                  placeholder="Your post title here.">
               </div>
               <div class="form-group">
                 <label for="formGroupExampleInput2">Post</label>
-                <textarea rows="5" type="text" class="form-control" id="formGroupExampleInput2"
+                <textarea rows="5" type="text" class="form-control" id="formGroupExampleInput2" name="body"
                   placeholder="You post content here ..."></textarea>
 
               </div>
