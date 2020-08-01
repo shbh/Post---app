@@ -1,18 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var posts = [{
-  title: "this is post title",
-  body: "As your wish post ",
-  cover: "https://picsum.photos/200/100"
-},
-{
-  title: "this is post title 2",
-  body: "As your wish post 2 ",
-  cover: "https://picsum.photos/200/100",
-
-},
-
-]
+var data = require('./data.json');
+var posts = data.posts;
+var fs = require('fs');
 
 /* GET home page. */
 
@@ -20,7 +10,7 @@ router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'Express',
     name: 'Shubham',
-    posts: posts
+    posts: data.posts
   });
 
 
@@ -30,7 +20,6 @@ router.get('/', function (req, res, next) {
 
 router.post('/create', function (req, res, next) {
 
-
   const title = req.body.title;
   const body = req.body.body;
   const post = {
@@ -39,9 +28,21 @@ router.post('/create', function (req, res, next) {
     cover: "https://picsum.photos/200/100",
 
   }
-  posts.push(post)
 
-  res.redirect('/')
+  fs.readFile("./routes/data.json", 'utf8', function (err, data) {
+    if (err) {
+      console.log(err)
+    }
+
+    var oldData = JSON.parse(data);
+    var oldPosts = oldData.posts;
+    oldPosts.push(post);
+    oldData.posts = oldPosts;
+    fs.writeFile('./routes/data.json', JSON.stringify(oldData, null, 2), function (err, info) {
+      res.redirect('/?')
+    })
+  })
+
 })
 
 module.exports = router;

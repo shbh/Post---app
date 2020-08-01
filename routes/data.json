@@ -1,0 +1,14 @@
+{
+  "posts": [
+    {
+      "title": "this is post title",
+      "body": "As your wish post ",
+      "cover": "https://picsum.photos/200/100"
+    },
+    {
+      "title": "this is post title 2",
+      "body": "As your wish post 2 ",
+      "cover": "https://picsum.photos/200/100"
+    }
+  ]
+}
