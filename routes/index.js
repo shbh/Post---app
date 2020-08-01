@@ -3,15 +3,31 @@ var router = express.Router();
 var data = require('./data.json');
 var posts = data.posts;
 var fs = require('fs');
+var mysql = require('mysql')
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'dev',
+  password: "developer",
+  database: 'blog'
+})
+
+connection.connect()
+
 
 /* GET home page. */
 
 router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: 'Express',
-    name: 'Shubham',
-    posts: data.posts
-  });
+
+  connection.query("SELECT * FROM posts ORDER BY created_at DESC", (err, rows) => {
+    console.log(err, rows);
+    res.render('index', {
+      title: 'Express',
+      name: 'Shubham',
+      posts: rows
+    });
+
+  })
+
 
 
 
@@ -25,24 +41,15 @@ router.post('/create', function (req, res, next) {
   const post = {
     title: title,
     body: body,
-    cover: "https://picsum.photos/200/100",
+    // cover: "https://picsum.photos/200/100",
 
   }
 
-  fs.readFile("./routes/data.json", 'utf8', function (err, data) {
-    if (err) {
-      console.log(err)
-    }
 
-    var oldData = JSON.parse(data);
-    var oldPosts = oldData.posts;
-    oldPosts.push(post);
-    oldData.posts = oldPosts;
-    fs.writeFile('./routes/data.json', JSON.stringify(oldData, null, 2), function (err, info) {
-      res.redirect('/?')
-    })
+  connection.query("INSERT INTO posts SET ?", post, (err, rows) => {
+    console.log(err, rows);
+    res.redirect('/?')
   })
-
 })
 
 module.exports = router;

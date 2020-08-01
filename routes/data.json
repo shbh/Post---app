@@ -9,6 +9,11 @@
       "title": "this is post title 2",
       "body": "As your wish post 2 ",
       "cover": "https://picsum.photos/200/100"
+    },
+    {
+      "title": "",
+      "body": "",
+      "cover": "https://picsum.photos/200/100"
     }
   ]
 }
