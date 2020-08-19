@@ -13,26 +13,50 @@ var connection = mysql.createConnection({
 
 connection.connect()
 
+var knex = require('knex')({
+  client: 'mysql',
+  connection: {
+    host: 'localhost',
+    user: 'dev',
+    password: 'developer',
+    database: 'blog'
+  }
+});
+
+
 
 /* GET home page. */
 
+
 router.get('/', function (req, res, next) {
 
-  connection.query("SELECT * FROM posts ORDER BY created_at DESC", (err, rows) => {
-    console.log(err, rows);
+  knex.select().table('posts').orderBy('created_at', 'desc').then((data) => {
+    console.log(data);
+
     res.render('index', {
       title: 'Express',
       name: 'Shubham',
-      posts: rows
+      posts: data
     });
 
   })
 
 
+  // connection.query("SELECT * FROM posts ORDER BY created_at DESC", (err, rows) => {
+  //   console.log(err, rows);
+  //   res.render('index', {
+  //     title: 'Express',
+  //     name: 'Shubham',
+  //     posts: rows
+  //   });
+
+})
 
 
 
-});
+
+
+
 
 router.post('/create', function (req, res, next) {
 
