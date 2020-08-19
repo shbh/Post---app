@@ -1,17 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var data = require('./data.json');
-var posts = data.posts;
-var fs = require('fs');
-var mysql = require('mysql')
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'dev',
-  password: "developer",
-  database: 'blog'
-})
 
-connection.connect()
 
 var knex = require('knex')({
   client: 'mysql',
@@ -69,11 +58,15 @@ router.post('/create', function (req, res, next) {
 
   }
 
+  knex("posts").insert(post).then(() => {
+    console.log('data inserted')
 
-  connection.query("INSERT INTO posts SET ?", post, (err, rows) => {
-    console.log(err, rows);
     res.redirect('/?')
+
   })
+  //   connection.query("INSERT INTO posts SET ?", post, (err, rows) => {
+  //     console.log(err, rows);
+  //   })
 })
 
 module.exports = router;
