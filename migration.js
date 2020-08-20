@@ -1,3 +1,9 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+var pg = require('pg');
+pg.defaults.ssl = true;
+
+
 
 var knex = require('knex')({
   client: 'pg',

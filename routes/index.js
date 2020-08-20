@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 var pg = require('pg');
 pg.defaults.ssl = true;
 
