@@ -1,17 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+var pg = require('pg');
+pg.defaults.ssl = true;
 
 var knex = require('knex')({
-  client: 'mysql',
-  connection: {
-    host: 'localhost',
-    user: 'dev',
-    password: 'developer',
-    database: 'blog'
-  }
+  client: 'pg',
+  connection: process.env.DATABASE_URL,
+  searchPath: ['knex', 'public'],
 });
-
 
 
 /* GET home page. */
