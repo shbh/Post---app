@@ -8,7 +8,7 @@ pg.defaults.ssl = true;
 
 var knex = require('knex')({
   client: 'pg',
-  connection: process.env.DATABASE_URL,
+  connection: process.env.DATABASE_URL || 'postgresql:dev:password@localhost:5432/blog',
   searchPath: ['knex', 'public'],
 });
 
@@ -29,15 +29,6 @@ router.get('/', function (req, res, next) {
 
   })
 
-
-  // connection.query("SELECT * FROM posts ORDER BY created_at DESC", (err, rows) => {
-  //   console.log(err, rows);
-  //   res.render('index', {
-  //     title: 'Express',
-  //     name: 'Shubham',
-  //     posts: rows
-  //   });
-
 })
 
 
@@ -53,8 +44,6 @@ router.post('/create', function (req, res, next) {
   const post = {
     title: title,
     body: body,
-    // cover: "https://picsum.photos/200/100",
-
   }
 
   knex("posts").insert(post).then(() => {
@@ -63,9 +52,23 @@ router.post('/create', function (req, res, next) {
     res.redirect('/?')
 
   })
-  //   connection.query("INSERT INTO posts SET ?", post, (err, rows) => {
-  //     console.log(err, rows);
-  //   })
 })
+
+/* GET post page */
+
+router.get('/posts/:id', function (req, res, next) {
+
+  knex('posts').where('id', parseInt(req.params.id))
+    .then(data => {
+      if (!data.length) {
+        return res.status(404).send('No post found');
+      }
+      return res.render('post', { title: 'post', name: 'post', post: data[0] });
+    })
+    .catch(err => {
+      res.status(404).send('No post found');
+      console.log(err);
+    })
+});
 
 module.exports = router;
